@@ -10,7 +10,6 @@
 - [ ] upload on github with proper commit messages
 - [ ] use `-g` gcc debugging option for use with `gdb`
 - [ ] config file for code-formatting
-- [ ] 
 
 ## Dependencies
 
@@ -18,3 +17,4 @@ Document somehow that these are dependencies and need to be installed (or make a
 
 - [ ] `valgrind`
 - [ ] `check` testing framework lib 
+- [ ] `lcov`

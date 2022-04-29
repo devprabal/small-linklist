@@ -7,6 +7,7 @@
 
 START_TEST(create_node_tc)
 {
+    ck_assert_int_eq(1,1);
 }
 END_TEST
 
@@ -16,6 +17,7 @@ Suite *create_suite(void)
     TCase *tc = tcase_create(TCNAME);
 
     tcase_add_test(tc, create_node_tc);
+    suite_add_tcase(s, tc);
     return s;
 }
 

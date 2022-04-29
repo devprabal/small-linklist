@@ -1,3 +1,9 @@
 *.o
 *.out
-
+*.gcno
+*.gcda
+*.gcov
+*.info
+tests/*
+!tests/Makefile
+!tests/tests.sh

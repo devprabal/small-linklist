@@ -14,7 +14,7 @@ OBJS+=main/src/main.o
 
 all: main.out
 	@echo -e "$(COLOR_GREEN)============ RUNNING MAIN PROGRAM ============$(COLOR_RESET)"
-	@valgrind --leak-check=full --show-leak-kinds=all --quiet ./$<
+	valgrind --leak-check=full --show-leak-kinds=all --quiet ./$<
 
 %.o: %.c
 	@echo -e "$(COLOR_YELLOW)============ COMPILING FILES ============$(COLOR_RESET)"
@@ -26,5 +26,5 @@ main.out: $(OBJS)
 
 clean:
 	@echo -e "$(COLOR_YELLOW)============ CLEANING ============$(COLOR_RESET)"
-	@rm -f main.out
-	@rm -f $(OBJS)
+	rm -f main.out
+	rm -f $(OBJS)
