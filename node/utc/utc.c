@@ -7,7 +7,10 @@
 
 START_TEST(create_node_tc)
 {
-    ck_assert_int_eq(1,1);
+    Node *node = NULL;
+    node = create_node();
+    ck_assert_ptr_ne(node);
+    destroy_node(node);
 }
 END_TEST
 
