@@ -8,7 +8,7 @@ COLOR_RESET=\033[0m
 
 CC=gcc
 CFLAGS=-Wall -fprofile-arcs -ftest-coverage
-CHECK_FRMWRK_FLAGS=-I/usr/include -L/usr/lib -lcheck
+CHECK_FRMWRK_FLAGS=-I/usr/include -L/usr/lib -L/usr/lib/x86_64-linux-gnu -lcheck -lcheck_pic
 
 SRC_DIR=$(ROOT_DIR)/node/src
 TRG+=node.c

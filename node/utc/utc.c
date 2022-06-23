@@ -9,7 +9,7 @@ START_TEST(create_node_tc)
 {
     Node *node = NULL;
     node = create_node();
-    ck_assert_ptr_ne(node);
+    ck_assert_ptr_ne(node, NULL);
     destroy_node(node);
 }
 END_TEST

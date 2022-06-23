@@ -1,4 +1,4 @@
-name: CI Build
+name: CI Unit Test
 
 on:
   push:
@@ -16,10 +16,12 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install valgrind
+        sudo apt-get install valgrind check
+        whereis check
+        
     - name: Clean
-      run: make clean
-    - name: Compile
-      run: make main.out
-    - name: Valgrind report
-      run: make all
+      run: make -C tests clean
+    - name: Run tests
+      run: make -C tests tests
+    - name: Code Coverage
+      run: make -C tests report
