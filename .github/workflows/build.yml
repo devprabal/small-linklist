@@ -1,0 +1,19 @@
+name: CI build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: clean
+      run: make clean
+    - name: run
+      run: make all
