@@ -18,6 +18,8 @@
 - [ ] list can have a struct `ListInstance` which gives the user functions by which they can insert/delete/update/find/etc in the list
 - [ ] log level lines instead of `printf()`s for debugging
 - [ ] I have changed my style from `char *var` to `char* var`, also changed curly braces to start on the same line (unless it is a function defintion)
+- [ ] fix github CI unit test
+- [ ] cache github CI workflow/environment so that it doesn't install `valgrind` etc. on every push
 
 ## Dependencies
 
