@@ -8,6 +8,7 @@ CC=gcc
 CFLAGS=-Wall
 
 OBJS+=node/src/node.o
+OBJS+=list/src/list.o
 OBJS+=main/src/main.o
 
 .PHONY= all clean

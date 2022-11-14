@@ -53,3 +53,12 @@ Node *get_next_node(Node *node)
     return NULL;
 }
 
+Node* append_node(Node* node, unsigned size, void* data)
+{
+    if(node && !(node->next)) {
+        node->next = create_node();
+        fill_node_data(node->next, size, data);
+        return node->next;
+    }
+    return NULL;
+}
