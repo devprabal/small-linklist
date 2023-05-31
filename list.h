@@ -9,6 +9,6 @@ typedef void(* list_func)(void*);
 Head* create_list(void);
 void destroy_list(Head* head);
 unsigned count_nodes(Head* head);
-void append_to_list(Head* head, unsigned size, void* data);
+int append_to_list(Head* head, unsigned size, void* data);
 
 #endif // LIST_H__
