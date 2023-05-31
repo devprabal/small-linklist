@@ -15,9 +15,16 @@ REPORT_DIR = report
 SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 
-all: $(BUILD_DIR)/main
+all: check_dependencies $(BUILD_DIR)/main
 	@echo "$(COLOR_GREEN)============ RUNNING VALGRIND ============$(COLOR_RESET)"
-	valgrind --leak-check=full --show-leak-kinds=all --quiet ./$<
+	valgrind --leak-check=full --show-leak-kinds=all --quiet $(BUILD_DIR)/main
+
+check_dependencies:
+	@echo "$(COLOR_YELLOW)============ CHECKING DEPENDENCIES ============$(COLOR_RESET)"
+	@command -v valgrind > /dev/null || (echo "$(COLOR_RED)Valgrind is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y valgrind)
+	@command -v check > /dev/null || (echo "$(COLOR_RED)Check is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y check)
+	@command -v lcov > /dev/null || (echo "$(COLOR_RED)Lcov is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y lcov)
+	@command -v gcovr > /dev/null || (echo "$(COLOR_RED)Gcovr is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y gcovr)
 
 $(BUILD_DIR)/main: $(OBJECTS)
 	@echo "$(COLOR_YELLOW)============ GENERATING EXECUTABLE PROGRAM ============$(COLOR_RESET)"
@@ -28,17 +35,17 @@ $(BUILD_DIR)/%.o: %.c
 	@mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) $(COVERAGE_CFLAGS) -I. -c $< -o $@
 
-.PHONY = clean
+.PHONY: cov clean
 
 cov: $(BUILD_DIR)/main
 	@echo "$(COLOR_GREEN)============ RUNNING MAIN PROGRAM ============$(COLOR_RESET)"
 	@./$(BUILD_DIR)/main
 	@gcov $(SOURCES) -o $(BUILD_DIR)
 	@mv *.gcov $(BUILD_DIR)
-	@lcov --capture --directory $(BUILD_DIR) --output-file coverage.info
-	@genhtml coverage.info --output-directory $(REPORT_DIR)
+	@lcov --capture --directory $(BUILD_DIR) --output-file $(REPORT_DIR)/coverage.info
+	@genhtml $(REPORT_DIR)/coverage.info --output-directory $(REPORT_DIR)
 
 clean:
 	@echo "$(COLOR_YELLOW)============ CLEANING ============$(COLOR_RESET)"
 	rm -rf $(BUILD_DIR) $(REPORT_DIR)
-	rm -f coverage.info *.gcov
+	rm -f $(REPORT_DIR)/coverage.info $(BUILD_DIR)/*.gcov
