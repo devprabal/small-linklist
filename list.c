@@ -1,12 +1,10 @@
 #include "list.h"
 
-struct _Head {
+struct Head {
     Node* front;
 };
 
-typedef Node*(* node_func)(Node*);
-
-static void iterate_list(Head* head, node_func node_fptr, user_func user_fptr, void *user_func_args)
+static void iterate_list(Head* head, node_func node_fptr, list_func user_fptr, void *user_func_args)
 {
     if(!node_fptr) {
         printf("\nNeed to provide function for node iteration\n");

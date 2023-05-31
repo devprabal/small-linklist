@@ -3,8 +3,8 @@
 
 #include "node.h"
 
-typedef struct _Head Head;
-typedef void(* user_func)(void*);
+typedef struct Head Head;
+typedef void(* list_func)(void*);
 
 Head* create_list(void);
 void destroy_list(Head* head);

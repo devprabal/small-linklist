@@ -20,17 +20,35 @@ void create_node_tc(void)
     destroy_node(node);
 }
 
+typedef struct Person {
+    char* name;
+    int age;
+} Person;
+
+static void free_person_name(Person* person)
+{
+    if(person)
+    {
+        if(person->name)
+        {
+            free(person->name);
+            person->name = NULL;
+        }
+    }
+}
+
+static void* user_node_data_free_func(void* item)
+{
+    free_person_name((Person*)item);
+    return NULL;
+}
+
 void create_list_tc(void)
 {
     Head* head = create_list();
     assert(NULL != head);
 
-    typedef struct User {
-        char* name;
-        int age;
-    } User;
-
-    User user_list[] = {
+    Person person_list[] = {
         {.name = strdup("Kei"), .age = 26},
         {.name = strdup("Consti"), .age = 16},
         {.name = strdup("Midnight"), .age = 25},
@@ -42,14 +60,15 @@ void create_list_tc(void)
         {.name = strdup("Kelvin"), .age = 12},
     };
 
-    uint8_t user_list_len = sizeof(user_list)/sizeof(user_list[0]);
-    for(uint8_t i = 0; i < user_list_len; i++)
+    uint8_t person_list_len = sizeof(person_list)/sizeof(person_list[0]);
+    for(uint8_t i = 0; i < person_list_len; i++)
     {
-        append_to_list(head, sizeof(User), &user_list[i]);
+        append_to_list(head, sizeof(Person), &person_list[i]);
     }
 
-    assert(user_list_len == count_nodes(head));
+    assert(person_list_len == count_nodes(head));
 
+    set_user_data_free_func(user_node_data_free_func);
     destroy_list(head);
 }
 
