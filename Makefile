@@ -35,17 +35,17 @@ $(BUILD_DIR)/%.o: %.c
 	@mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) $(COVERAGE_CFLAGS) -I. -c $< -o $@
 
-.PHONY: cov clean
+.PHONY: clean
 
 cov: $(BUILD_DIR)/main
 	@echo "$(COLOR_GREEN)============ RUNNING MAIN PROGRAM ============$(COLOR_RESET)"
 	@./$(BUILD_DIR)/main
 	@gcov $(SOURCES) -o $(BUILD_DIR)
 	@mv *.gcov $(BUILD_DIR)
+	@mkdir $(REPORT_DIR)
 	@lcov --capture --directory $(BUILD_DIR) --output-file $(REPORT_DIR)/coverage.info
 	@genhtml $(REPORT_DIR)/coverage.info --output-directory $(REPORT_DIR)
 
 clean:
 	@echo "$(COLOR_YELLOW)============ CLEANING ============$(COLOR_RESET)"
 	rm -rf $(BUILD_DIR) $(REPORT_DIR)
-	rm -f $(REPORT_DIR)/coverage.info $(BUILD_DIR)/*.gcov
