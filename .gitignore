@@ -1,9 +1,4 @@
-*.o
-*.out
-*.gcno
-*.gcda
-*.gcov
-*.info
-tests/*
-!tests/Makefile
-!tests/tests.sh
+.vscode/
+build/
+coverage.info
+report/

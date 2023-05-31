@@ -1,6 +1,11 @@
 #ifndef NODE_H__
 #define NODE_H__
 
+#include <stdio.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
+
 typedef struct _Node Node;
 
 Node *create_node(void);

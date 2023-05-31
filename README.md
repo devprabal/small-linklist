@@ -20,6 +20,7 @@
 - [ ] I have changed my style from `char *var` to `char* var`, also changed curly braces to start on the same line (unless it is a function defintion)
 - [ ] fix github CI unit test
 - [ ] cache github CI workflow/environment so that it doesn't install `valgrind` etc. on every push
+- [ ] Separate debug bin build (compiled with `-g`) process and release bin build process 
 
 ## Dependencies
 
@@ -28,3 +29,4 @@ Document somehow that these are dependencies and need to be installed (or make a
 - [ ] `valgrind`
 - [ ] `check` testing framework lib 
 - [ ] `lcov`
+- [ ] `gcovr`

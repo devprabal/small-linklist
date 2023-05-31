@@ -1,17 +1,12 @@
-#include "list/inc/list.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include "node/inc/node.h"
+#include "list.h"
 
 struct _Head {
     Node* front;
 };
 
 typedef Node*(* node_func)(Node*);
-typedef void(* user_func)(void*, Node*);
 
-static void list_util_iter(Head* head, node_func node_fptr, user_func user_fptr, void *user_func_args)
+static void iterate_list(Head* head, node_func node_fptr, user_func user_fptr, void *user_func_args)
 {
     if(!node_fptr) {
         printf("\nNeed to provide function for node iteration\n");
@@ -21,14 +16,14 @@ static void list_util_iter(Head* head, node_func node_fptr, user_func user_fptr,
         Node* front = head->front;
         while(front) {
             if(user_fptr) {
-                user_fptr(user_func_args, front);
+                user_fptr(user_func_args);
             }
             front = node_fptr(front); 
         }
     }
 }
 
-static void list_util_count_nodes(void* args, Node* node)
+static void increment(void* args)
 {
     if(!args) {
         printf("\nPass unsigned type output storage\n");
@@ -48,13 +43,14 @@ Head* create_list(void)
 
 void destroy_list(Head* head)
 {
-    list_util_iter(head, destroy_node, NULL, NULL);
+    iterate_list(head, destroy_node, NULL, NULL);
+    free(head);
 }
 
 unsigned count_nodes(Head* head)
 {
     unsigned count = 0;
-    list_util_iter(head, get_next_node, list_util_count_nodes, &count);
+    iterate_list(head, get_next_node, increment, &count);
     return count;
 }
 
@@ -71,7 +67,7 @@ void append_to_list(Head* head, unsigned size, void* data) // TODO: how would I 
                 this_node = next_node;
                 next_node = get_next_node(next_node);
             }
-            Node* new_node = append_node(this_node, size, data);
+            append_node(this_node, size, data);
         }
     }
 }

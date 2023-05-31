@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "node/inc/node.h"
+#include "node.h"
 
 struct _Node 
 {
