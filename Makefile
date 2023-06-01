@@ -42,7 +42,7 @@ cov: $(BUILD_DIR)/main
 	@./$(BUILD_DIR)/main
 	@gcov $(SOURCES) -o $(BUILD_DIR)
 	@mv *.gcov $(BUILD_DIR)
-	@mkdir $(REPORT_DIR)
+	@mkdir -p $(REPORT_DIR)
 	@lcov --capture --directory $(BUILD_DIR) --output-file $(REPORT_DIR)/coverage.info
 	@genhtml $(REPORT_DIR)/coverage.info --output-directory $(REPORT_DIR)
 

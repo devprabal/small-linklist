@@ -54,32 +54,31 @@ unsigned count_nodes(Head* head)
 
 int append_to_list(Head* head, unsigned size, void* data)
 {
-    if (head) 
+    if (!head)
     {
-        if (!(head->front)) 
-        {
-            head->front = create_node();
-            fill_node_data(head->front, size, data);
-        } 
-        else 
-        {
-            Node *this_node = head->front;
-            Node *next_node = get_next_node(this_node);
-            while (next_node) 
-            {
-                this_node = next_node;
-                next_node = get_next_node(next_node);
-            }
-            if (append_node(this_node, size, data)) 
-            {
-                return 1;
-            } 
-            else 
-            {
-                return 0;
-            }
-        }
-        return 1;
+        return 0;
     }
-    return 0;
+
+    if (!(head->front))
+    {
+        head->front = create_node();
+        fill_node_data(head->front, size, data);
+    }
+    else
+    {
+        Node* this_node = head->front;
+        Node* next_node = get_next_node(this_node);
+        while (next_node)
+        {
+            this_node = next_node;
+            next_node = get_next_node(next_node);
+        }
+
+        if (!append_node(this_node, size, data))
+        {
+            return 0;  // if append_node fails
+        }
+    }
+
+    return 1;  // if the operation is successful
 }
