@@ -82,3 +82,24 @@ int append_to_list(Head* head, unsigned size, void* data)
 
     return 1;  // if the operation is successful
 }
+
+bool find_in_list(Head* head, void* item, bool(*compare_func)(void*, void*))
+{
+    if(!compare_func)
+    {
+        printf("\nProvide function for data comparison\n");
+        return false;
+    }
+    if(head) {
+        Node* front = head->front;
+        while(front) {
+            Node* node_data = get_node_data(front);
+            if(compare_func(item, node_data))
+            {
+                return true;
+            }
+            front = get_next_node(front);
+        }
+    }
+    return false;
+}
