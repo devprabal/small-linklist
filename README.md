@@ -3,6 +3,7 @@
 ## TODOs
 
 - [ ] nicer Makefile
+- [ ] Move to Scons or other build systems, if required, in future
 - [x] libcheck unit testing
 - [x] check memleaks, etc. with valgrind
 - [ ] code coverage report generation with gcov
