@@ -37,10 +37,47 @@ static void free_person_name(Person* person)
     }
 }
 
-static void* user_node_data_free_func(void* item)
+static void user_data_free_func(void* args, void* item)
 {
+    if(args)
+    {
+        size_t* count = (size_t*)args;
+        (*count)++;
+    }
     free_person_name((Person*)item);
-    return NULL;
+}
+
+static bool compare_person(void* item1, void* item2)
+{
+    Person* person1 = (Person*)item1;
+    Person* person2 = (Person*)item2;
+    if(!person1 || !person2) return false;
+
+    bool is_age_matched = (person1->age == person2->age);
+
+    size_t name1_len = strlen(person1->name);
+    size_t name2_len = strlen(person2->name);
+    if(name1_len != name2_len) return false;
+
+    bool is_name_matched = (0 == strncmp(person1->name, person2->name, name1_len));
+
+    return (is_age_matched && is_name_matched);
+}
+
+typedef enum ITEM_TYPE {
+   ITEM_TYPE_PERSON,
+   ITEM_TYPE_MAX,
+} ITEM_TYPE;
+
+typedef bool(*compare_item_func_t)(void*, void*);
+
+compare_item_func_t compare_item_func_list[ITEM_TYPE_MAX] = {
+    [ITEM_TYPE_PERSON] = compare_person,
+};
+
+static compare_item_func_t get_compare_item_func(ITEM_TYPE item_type)
+{
+    return compare_item_func_list[item_type];
 }
 
 void create_list_tc(void)
@@ -68,8 +105,13 @@ void create_list_tc(void)
 
     assert(person_list_len == count_nodes(head));
 
-    set_user_data_free_func(user_node_data_free_func);
-    destroy_list(head);
+    assert(true == find_in_list(head, &((Person){.name = "Nikhil", .age = 18}), get_compare_item_func(ITEM_TYPE_PERSON)));
+    assert(false == find_in_list(head, &((Person){.name = "Nikhil", .age = 28}), get_compare_item_func(ITEM_TYPE_PERSON)));
+    assert(false == find_in_list(head, &((Person){.name = "Nikii", .age = 18}), get_compare_item_func(ITEM_TYPE_PERSON)));
+
+    size_t n_person_deleted = 0;
+    destroy_list(head, user_data_free_func, &n_person_deleted);
+    assert(n_person_deleted == person_list_len);
 }
 
 int main(void)

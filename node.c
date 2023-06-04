@@ -6,8 +6,6 @@ struct Node
     Node *next;
 };
 
-static user_data_free_func user_data_free_fptr = NULL;
-
 Node *create_node(void)
 {
     Node *node = (Node *)calloc(1, sizeof(Node));
@@ -23,10 +21,6 @@ Node *destroy_node(Node *node)
         next_node = node->next;
         if(node->data)
         {
-            if(user_data_free_fptr)
-            {
-                user_data_free_fptr(node->data);
-            }
             free(node->data);
         }
         free(node);
@@ -67,9 +61,4 @@ Node* append_node(Node* node, unsigned size, void* data)
         return node->next;
     }
     return NULL;
-}
-
-void set_user_data_free_func(user_data_free_func user_fptr)
-{
-    user_data_free_fptr = user_fptr;
 }
