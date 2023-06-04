@@ -8,6 +8,7 @@ static void iterate_list(Head* head, node_func node_fptr, list_func user_fptr, v
 {
     if(!node_fptr) {
         printf("\nNeed to provide function for node iteration\n");
+        node_fptr = get_next_node;
     }
     
     if(head) {
@@ -37,8 +38,9 @@ static void increment(void* args, void* Node_data)
     }
 }
 
-Head* create_list(void)
+Head* create_list(Config* config)
 {
+    set_config(config);
     Head* head = calloc(1, sizeof(Head));
     if(head) return head;
     return NULL;
@@ -57,17 +59,17 @@ unsigned count_nodes(Head* head)
     return count;
 }
 
-int append_to_list(Head* head, unsigned size, void* data)
+SLL_Result append_to_list(Head* head, unsigned size, void* data)
 {
     if (!head)
     {
-        return 0;
+        return SLL_FAIL;
     }
 
     if (!(head->front))
     {
         head->front = create_node();
-        fill_node_data(head->front, size, data);
+        return fill_node_data(head->front, size, data);
     }
     else
     {
@@ -78,14 +80,8 @@ int append_to_list(Head* head, unsigned size, void* data)
             this_node = next_node;
             next_node = get_next_node(next_node);
         }
-
-        if (!append_node(this_node, size, data))
-        {
-            return 0;  // if append_node fails
-        }
+        return append_node(this_node, size, data);
     }
-
-    return 1;  // if the operation is successful
 }
 
 bool find_in_list(Head* head, void* item, bool(* compare_func)(void*, void*))
@@ -107,4 +103,26 @@ bool find_in_list(Head* head, void* item, bool(* compare_func)(void*, void*))
         }
     }
     return false;
+}
+
+void set_config(Config* config)
+{
+    if(config && (config->list_data_alloc_func_fptr || config->list_data_dealloc_func_fptr))
+    {
+        if(NULL == config->list_data_alloc_func_fptr)
+        {
+            printf("\nProvide function for data allocation. Aborting.\n");
+            exit(EXIT_FAILURE);
+        }
+        if(NULL == config->list_data_dealloc_func_fptr)
+        {
+            printf("\nProvide function for data deallocation. Aborting.\n");
+            exit(EXIT_FAILURE);
+        }
+        set_node_data_alloc_dealloc_func(config->list_data_alloc_func_fptr, config->list_data_dealloc_func_fptr);
+    }
+    else
+    {
+        printf("\nProvide functions for data allocation/dealloc. Using calloc() and free() by default\n");
+    }
 }
