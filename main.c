@@ -12,19 +12,17 @@ typedef struct Person
     int age;
 } Person;
 
-typedef _Bool (*compare_item_func_t)(void *, void *);
+typedef _Bool (*compare_item_func_t)(Person *, Person *);
 
-_Bool compare_person(Person *person1, Person *person2);
-
-_Bool compare_person_wrapper(void *item1, void *item2)
+_Bool compare_person(Person *person1, Person *person2)
 {
-    return compare_person((Person *)item1, (Person *)item2);
+    return person1->age < person2->age;
 }
 
 #define NUM_ITEM_TYPES 1
 #define ITEM_TYPE_PERSON 0
 
-compare_item_func_t compare_item_func_list[NUM_ITEM_TYPES] = {0};
+compare_item_func_t compare_item_func_list[NUM_ITEM_TYPES] = {compare_person};
 
 void create_node_tc(void)
 {
@@ -60,11 +58,6 @@ static void *user_node_data_free_func(void *item)
     return NULL;
 }
 
-_Bool compare_person(Person *person1, Person *person2)
-{
-    return person1->age < person2->age;
-}
-
 void create_list_tc(void)
 {
     Head *head = create_list();
@@ -92,7 +85,7 @@ void create_list_tc(void)
 
     set_user_data_free_func(user_node_data_free_func);
 
-    compare_item_func_list[ITEM_TYPE_PERSON] = compare_person_wrapper;
+    compare_item_func_list[ITEM_TYPE_PERSON] = compare_person;
 
     destroy_list(head);
 }
