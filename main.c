@@ -37,14 +37,20 @@ static void free_person_name(Person* person)
     }
 }
 
-static void* user_node_data_free_func(void* item)
+static void user_data_free_func(void* args, void* item)
 {
+    if(args)
+    {
+        size_t* count = (size_t*)args;
+        (*count)++;
+    }
     free_person_name((Person*)item);
-    return NULL;
 }
 
-static bool compare_person(Person* person1, Person* person2)
+static bool compare_person(void* item1, void* item2)
 {
+    Person* person1 = (Person*)item1;
+    Person* person2 = (Person*)item2;
     if(!person1 || !person2) return false;
 
     bool is_age_matched = (person1->age == person2->age);
@@ -103,8 +109,9 @@ void create_list_tc(void)
     assert(false == find_in_list(head, &((Person){.name = "Nikhil", .age = 28}), get_compare_item_func(ITEM_TYPE_PERSON)));
     assert(false == find_in_list(head, &((Person){.name = "Nikii", .age = 18}), get_compare_item_func(ITEM_TYPE_PERSON)));
 
-    set_user_data_free_func(user_node_data_free_func);
-    destroy_list(head);
+    size_t n_person_deleted = 0;
+    destroy_list(head, user_data_free_func, &n_person_deleted);
+    assert(n_person_deleted == person_list_len);
 }
 
 int main(void)
