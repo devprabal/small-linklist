@@ -1,0 +1,14 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "small-linklist build",
+            "command": "make",
+            "args": [],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+        }
+    ],
+    "version": "2.0.0"
+}

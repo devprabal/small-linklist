@@ -22,7 +22,8 @@ all: check_dependencies $(BUILD_DIR)/main
 check_dependencies:
 	@echo "$(COLOR_YELLOW)============ CHECKING DEPENDENCIES ============$(COLOR_RESET)"
 	@command -v valgrind > /dev/null || (echo "$(COLOR_RED)Valgrind is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y valgrind)
-	@command -v check > /dev/null || (echo "$(COLOR_RED)Check is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y check)
+## This will only work for ubuntu. On Arch, libcheck is installed elsewhere.
+	@ls /usr/lib/x86_64-linux-gnu/ | grep libcheck.a > /dev/null || (echo "$(COLOR_RED)Check is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y check)
 	@command -v lcov > /dev/null || (echo "$(COLOR_RED)Lcov is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y lcov)
 	@command -v gcovr > /dev/null || (echo "$(COLOR_RED)Gcovr is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y gcovr)
 
