@@ -12,22 +12,18 @@ typedef struct Person
     int age;
 } Person;
 
-// define compare_item_func_t as a function pointer type
 typedef _Bool (*compare_item_func_t)(void *, void *);
 
-// declare the compare_person function
 _Bool compare_person(Person *person1, Person *person2);
 
-// a wrapper function for compare_person that has the required signature
 _Bool compare_person_wrapper(void *item1, void *item2)
 {
     return compare_person((Person *)item1, (Person *)item2);
 }
 
 #define NUM_ITEM_TYPES 1
-#define ITEM_TYPE_PERSON 0 // define ITEM_TYPE_PERSON with the appropriate value
+#define ITEM_TYPE_PERSON 0
 
-// define compare_item_func_list as a global variable
 compare_item_func_t compare_item_func_list[NUM_ITEM_TYPES] = {0};
 
 void create_node_tc(void)
@@ -66,7 +62,6 @@ static void *user_node_data_free_func(void *item)
 
 _Bool compare_person(Person *person1, Person *person2)
 {
-    // compare persons based on some criteria (here: compare by age)
     return person1->age < person2->age;
 }
 
@@ -97,7 +92,6 @@ void create_list_tc(void)
 
     set_user_data_free_func(user_node_data_free_func);
 
-    // update compare_item_func_list with the wrapper function
     compare_item_func_list[ITEM_TYPE_PERSON] = compare_person_wrapper;
 
     destroy_list(head);
