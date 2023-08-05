@@ -1,5 +1,7 @@
 #include <assert.h>
 #include <stdint.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "node.h"
 #include "list.h"
@@ -83,7 +85,7 @@ static compare_item_func_t get_compare_item_func(ITEM_TYPE item_type)
 static size_t make_default_person_list(Head* head)
 {
     Person person_list[] = {
-        {.name = strdup("Kei"), .age = 26},
+        {.name = strdup("Kei"), .age = 26}, ////TODO: use a combination of malloc and memcpy instead of feature_test_macros. strdup is only availabe in c2x std
         {.name = strdup("Consti"), .age = 16},
         {.name = strdup("Midnight"), .age = 25},
         {.name = strdup("Nikhil"), .age = 18},

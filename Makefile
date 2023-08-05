@@ -5,8 +5,9 @@ COLOR_YELLOW=\033[1;33m
 COLOR_RESET=\033[0m
 
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11 -pedantic -g
-COVERAGE_CFLAGS = -fprofile-arcs -ftest-coverage
+CFLAGS = -Wall -Wextra -std=c11 -pedantic -g  -D_XOPEN_SOURCE=600
+##TODO: use only c11 without gnu extensions or posix std (feature_test_macros(7))
+COVERAGE_CFLAGS = -fprofile-arcs -ftest-coverage -fprofile-abs-path
 COVERAGE_LFLAGS = -lgcov --coverage
 
 BUILD_DIR = build
@@ -15,14 +16,16 @@ REPORT_DIR = report
 SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 
-all: check_dependencies $(BUILD_DIR)/main
-	@echo "$(COLOR_GREEN)============ RUNNING VALGRIND ============$(COLOR_RESET)"
-	valgrind --leak-check=full --show-leak-kinds=all --quiet $(BUILD_DIR)/main
+MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG = --no-print-directory
+
+all:
+	@make check_dependencies $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
+	@make valgrind $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
 
 check_dependencies:
+## This will only work for ubuntu. On Arch, libcheck is installed elsewhere.
 	@echo "$(COLOR_YELLOW)============ CHECKING DEPENDENCIES ============$(COLOR_RESET)"
 	@command -v valgrind > /dev/null || (echo "$(COLOR_RED)Valgrind is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y valgrind)
-## This will only work for ubuntu. On Arch, libcheck is installed elsewhere.
 	@ls /usr/lib/x86_64-linux-gnu/ | grep libcheck.a > /dev/null || (echo "$(COLOR_RED)Check is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y check)
 	@command -v lcov > /dev/null || (echo "$(COLOR_RED)Lcov is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y lcov)
 	@command -v gcovr > /dev/null || (echo "$(COLOR_RED)Gcovr is not installed. Installing...$(COLOR_RESET)" && sudo apt install -y gcovr)
@@ -41,7 +44,7 @@ $(BUILD_DIR)/%.o: %.c
 cov: $(BUILD_DIR)/main
 	@echo "$(COLOR_GREEN)============ RUNNING MAIN PROGRAM ============$(COLOR_RESET)"
 	@./$(BUILD_DIR)/main
-	@gcov $(SOURCES) -o $(BUILD_DIR)
+	@gcov --preserve-paths $(SOURCES) -o $(BUILD_DIR)
 	@mv *.gcov $(BUILD_DIR)
 	@mkdir -p $(REPORT_DIR)
 	@lcov --capture --directory $(BUILD_DIR) --output-file $(REPORT_DIR)/coverage.info
@@ -50,3 +53,14 @@ cov: $(BUILD_DIR)/main
 clean:
 	@echo "$(COLOR_YELLOW)============ CLEANING ============$(COLOR_RESET)"
 	rm -rf $(BUILD_DIR) $(REPORT_DIR)
+
+valgrind: $(BUILD_DIR)/main
+## Does not install dependencies
+	@echo "$(COLOR_GREEN)============ RUNNING VALGRIND ============$(COLOR_RESET)"
+	valgrind --leak-check=full --show-leak-kinds=all --quiet $(BUILD_DIR)/main
+
+sonarqube:
+## Do not check for dependencies
+	@make clean $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
+	@make valgrind $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
+	@make cov $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
