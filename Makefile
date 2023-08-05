@@ -5,7 +5,8 @@ COLOR_YELLOW=\033[1;33m
 COLOR_RESET=\033[0m
 
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11 -pedantic -g
+CFLAGS = -Wall -Wextra -std=c11 -pedantic -g  -D_XOPEN_SOURCE=600
+##TODO: use only c11 without gnu extensions or posix std (feature_test_macros(7))
 COVERAGE_CFLAGS = -fprofile-arcs -ftest-coverage
 COVERAGE_LFLAGS = -lgcov --coverage
 
