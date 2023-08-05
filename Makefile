@@ -7,7 +7,7 @@ COLOR_RESET=\033[0m
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c11 -pedantic -g  -D_XOPEN_SOURCE=600
 ##TODO: use only c11 without gnu extensions or posix std (feature_test_macros(7))
-COVERAGE_CFLAGS = -fprofile-arcs -ftest-coverage
+COVERAGE_CFLAGS = -fprofile-arcs -ftest-coverage -fprofile-abs-path
 COVERAGE_LFLAGS = -lgcov --coverage
 
 BUILD_DIR = build
@@ -20,7 +20,7 @@ MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG = --no-print-directory
 
 all:
 	@make check_dependencies $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
-	@make normal $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
+	@make valgrind $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
 
 check_dependencies:
 ## This will only work for ubuntu. On Arch, libcheck is installed elsewhere.
@@ -44,7 +44,7 @@ $(BUILD_DIR)/%.o: %.c
 cov: $(BUILD_DIR)/main
 	@echo "$(COLOR_GREEN)============ RUNNING MAIN PROGRAM ============$(COLOR_RESET)"
 	@./$(BUILD_DIR)/main
-	@gcov $(SOURCES) -o $(BUILD_DIR)
+	@gcov --preserve-paths $(SOURCES) -o $(BUILD_DIR)
 	@mv *.gcov $(BUILD_DIR)
 	@mkdir -p $(REPORT_DIR)
 	@lcov --capture --directory $(BUILD_DIR) --output-file $(REPORT_DIR)/coverage.info
@@ -54,7 +54,7 @@ clean:
 	@echo "$(COLOR_YELLOW)============ CLEANING ============$(COLOR_RESET)"
 	rm -rf $(BUILD_DIR) $(REPORT_DIR)
 
-normal: $(BUILD_DIR)/main
+valgrind: $(BUILD_DIR)/main
 ## Does not install dependencies
 	@echo "$(COLOR_GREEN)============ RUNNING VALGRIND ============$(COLOR_RESET)"
 	valgrind --leak-check=full --show-leak-kinds=all --quiet $(BUILD_DIR)/main
@@ -62,4 +62,5 @@ normal: $(BUILD_DIR)/main
 sonarqube:
 ## Do not check for dependencies
 	@make clean $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
-	@make normal $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
+	@make valgrind $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
+	@make cov $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)

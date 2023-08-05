@@ -1,3 +1,5 @@
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=devprabal_small-linklist)
+
 # Small linkedlist lib in C
 
 ## TODOs
