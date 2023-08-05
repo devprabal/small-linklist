@@ -5,7 +5,7 @@ COLOR_YELLOW=\033[1;33m
 COLOR_RESET=\033[0m
 
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c2x -pedantic -g
+CFLAGS = -Wall -Wextra -std=c11 -pedantic -g
 COVERAGE_CFLAGS = -fprofile-arcs -ftest-coverage
 COVERAGE_LFLAGS = -lgcov --coverage
 
