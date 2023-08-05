@@ -60,6 +60,6 @@ normal: $(BUILD_DIR)/main
 	valgrind --leak-check=full --show-leak-kinds=all --quiet $(BUILD_DIR)/main
 
 sonarqube:
-## Do not check for dependencies TODO:##should be managed by github actions workflow
+## Do not check for dependencies
 	@make clean $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
 	@make normal $(MAKE_SUPPRESS_ENTER_LEAVE_DIR_MSG)
