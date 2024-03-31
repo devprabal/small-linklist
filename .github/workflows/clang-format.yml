@@ -1,22 +1,27 @@
 name: clang-format
 
-on: [push]
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - uses: DoozyX/clang-format-lint-action@v0.17
       with:
         source: '.'
+        exclude: 'clang-format-ignore'
         extensions: 'h,c'
         clangFormatVersion: 17
         inplace: True
     - uses: EndBug/add-and-commit@v9.1.4
       with:
         author_name: Clang Robot
-        message: 'Formatting changes'
+        message: '[clang-format] Formatting changes'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
