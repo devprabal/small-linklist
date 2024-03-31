@@ -15,7 +15,7 @@ jobs:
     - uses: DoozyX/clang-format-lint-action@v0.17
       with:
         source: '.'
-        exclude: 'clang-format-ignore'
+        exclude: './clang-format-ignore'
         extensions: 'h,c'
         clangFormatVersion: 17
         inplace: True
