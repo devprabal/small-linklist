@@ -30,10 +30,8 @@ typedef struct Person
 
 static void free_person_name(Person* person)
 {
-    if (person)
-    {
-        if (person->name)
-        {
+    if (person) {
+        if (person->name) {
             free(person->name);
             person->name = NULL;
         }
