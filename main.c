@@ -85,7 +85,7 @@ static size_t make_default_person_list(Head* head)
 {
     Person person_list[] = {
         {        .name = strdup("Kei"), .age = 26}, ////TODO: use a combination of malloc and memcpy instead of
-  ///feature_test_macros. strdup is only availabe in c2x std
+  ///  feature_test_macros. strdup is only availabe in c2x std
         {     .name = strdup("Consti"), .age = 16},
         {   .name = strdup("Midnight"), .age = 25},
         {     .name = strdup("Nikhil"), .age = 18},
@@ -164,9 +164,10 @@ void create_custom_alloc_dealloc_func_tc(void)
     size_t default_person_list_len = make_default_person_list(head);
     assert(default_person_list_len == count_nodes(head));
 
-    destroy_list(
-        head, NULL, NULL);  ////TODO: How will user know that once he has set the dealloc func, does he also need to
-                            ///pass it here or not? or does he need to pass something else like `user_data_free_func()`?
+    destroy_list(head,
+                 NULL,
+                 NULL);  ////TODO: How will user know that once he has set the dealloc func, does he also need to
+                         /// pass it here or not? or does he need to pass something else like `user_data_free_func()`?
 }
 
 void out_of_mem_tc(void)
@@ -200,6 +201,6 @@ int main(void)
     ////TODO: There can be a case when the node creation is success, however, user data fill_node_data fails
     //// Node->Node->Node->Node but all Node->data will be NULL
     //// Test out this case and discuss if it is the correct behaviour, or should be stop making Nodes if Node->data
-    ///filling fails? / In that case, we will also need to delete the created Node for which data filling fails
+    /// filling fails? / In that case, we will also need to delete the created Node for which data filling fails
     return 0;
 }
