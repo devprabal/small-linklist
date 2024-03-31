@@ -9,6 +9,7 @@ on:
 
 jobs:
   build:
+    name: Code Formatting
     runs-on: ubuntu-latest
 
     steps:
