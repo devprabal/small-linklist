@@ -1,0 +1,66 @@
+Language: Cpp
+BasedOnStyle: Google
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  IndentBraces: false
+  AfterEnum: true
+  AfterStruct: true
+  AfterClass: true
+  AfterFunction: true
+  AfterUnion: true
+  AfterExternBlock: false
+  AfterCaseLabel: false
+  BeforeElse: false
+  BeforeWhile: false
+  AfterControlStatement: Never
+
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AlignArrayOfStructures: Right
+
+#ContinuationIndentWidth: 2
+
+Cpp11BracedListStyle: false
+IndentCaseLabels: false
+IndentCaseBlocks: false
+IndentGotoLabels: true
+IndentExternBlock: NoIndent
+
+BinPackParameters: false
+BinPackArguments: false
+IndentPPDirectives: BeforeHash
+
+KeepEmptyLinesAtTheStartOfBlocks: false
+InsertNewlineAtEOF: true
+KeepEmptyLinesAtEOF: true
+MaxEmptyLinesToKeep: 1
+
+PointerAlignment: Left
+ReferenceAlignment: Right
+
+ReflowComments: true
+SortIncludes: CaseSensitive
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeParens: ControlStatementsExceptControlMacros
+SpaceBeforeSquareBrackets: false
+
+AlignConsecutiveAssignments: AcrossEmptyLinesAndComments
+AlignConsecutiveDeclarations: None
+AlignConsecutiveMacros: AcrossEmptyLinesAndComments
+AlignEscapedNewlines: Left
+
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 120
+LineEnding: LF
+
+DisableFormat: false
