@@ -5,6 +5,7 @@
 
 #include "list.h"
 #include "node.h"
+#include "pubsub.h"
 
 void create_node_tc(void)
 {
@@ -192,7 +193,7 @@ void out_of_mem_tc(void)
     destroy_list(head, NULL, NULL);
 }
 
-int main(void)
+void sll_test_case(void)
 {
     create_node_tc();
     create_list_tc();
@@ -202,5 +203,38 @@ int main(void)
     //// Node->Node->Node->Node but all Node->data will be NULL
     //// Test out this case and discuss if it is the correct behaviour, or should be stop making Nodes if Node->data
     /// filling fails? / In that case, we will also need to delete the created Node for which data filling fails
+}
+
+static void* subscriber_event_cb1(void* data)
+{
+    printf("\ncalled sub event cb 1\n");
+    return NULL;
+}
+
+static void* subscriber_event_cb2(void* data)
+{
+    printf("\ncalled sub event cb 2\n");
+    return NULL;
+}
+PubsubSubscriber sub1 = { .subscriber_cb_fptr = subscriber_event_cb1, .sub_data = NULL };
+PubsubSubscriber sub2 = { .subscriber_cb_fptr = subscriber_event_cb2, .sub_data = NULL };
+void pubsub_test_case(void)
+{
+    pubsub_create();
+
+    snprintf(sub1.topic, strlen("/topic1") + 1, "%s", "/topic1");
+    pubsub_subscribe(sub1);
+
+    snprintf(sub1.topic, strlen("/topic1") + 1, "%s", "/topic1");
+    pubsub_subscribe(sub2);
+    PubsubPublisher event = { .data = NULL };
+    snprintf(event.topic, strlen("/topic1") + 1, "%s", "/topic1");
+    pubsub_publish(event);
+}
+
+int main(void)
+{
+    // sll_test_case();
+    pubsub_test_case();
     return 0;
 }
