@@ -32,9 +32,10 @@ static bool compare_topic(void* t1, void* t2)
     return false;
 }
 
-bool pubsub_publish(PubsubPublisher event) {
-    if(subscriber_list) {
-        if(true == find_in_list(subscriber_list, event.topic, compare_topic)){
+bool pubsub_publish(PubsubPublisher event)
+{
+    if (subscriber_list) {
+        if (true == find_in_list(subscriber_list, event.topic, compare_topic)) {
             printf("\nfound\n");
         } else {
             DBG;

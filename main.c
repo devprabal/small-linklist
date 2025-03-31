@@ -216,18 +216,18 @@ static void* subscriber_event_cb2(void* data)
     printf("\ncalled sub event cb 2\n");
     return NULL;
 }
-PubsubSubscriber sub1 = {.subscriber_cb_fptr = subscriber_event_cb1, .sub_data = NULL};
-PubsubSubscriber sub2 = {.subscriber_cb_fptr = subscriber_event_cb2, .sub_data = NULL};
+PubsubSubscriber sub1 = { .subscriber_cb_fptr = subscriber_event_cb1, .sub_data = NULL };
+PubsubSubscriber sub2 = { .subscriber_cb_fptr = subscriber_event_cb2, .sub_data = NULL };
 void pubsub_test_case(void)
 {
     pubsub_create();
-    
+
     snprintf(sub1.topic, strlen("/topic1") + 1, "%s", "/topic1");
     pubsub_subscribe(sub1);
-    
+
     snprintf(sub1.topic, strlen("/topic1") + 1, "%s", "/topic1");
     pubsub_subscribe(sub2);
-    PubsubPublisher event = {.data = NULL};
+    PubsubPublisher event = { .data = NULL };
     snprintf(event.topic, strlen("/topic1") + 1, "%s", "/topic1");
     pubsub_publish(event);
 }

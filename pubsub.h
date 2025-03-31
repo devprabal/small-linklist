@@ -7,11 +7,12 @@ typedef struct PubsubPublisher
 } PubsubPublisher;
 
 typedef void* (*subscriber_cb_t)(void*);
-typedef struct PubsubSubscriber {
+typedef struct PubsubSubscriber
+{
     char topic[20];
     subscriber_cb_t subscriber_cb_fptr;
     void* sub_data;
-}PubsubSubscriber;
+} PubsubSubscriber;
 
 bool pubsub_create(void);
 bool pubsub_publish(PubsubPublisher event);
